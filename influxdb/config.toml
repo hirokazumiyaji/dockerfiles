@@ -1,0 +1,57 @@
+bind-address = "0.0.0.0"
+
+[logging]
+level  = "info"
+file   = "/var/log/influxdb/stdout.log"
+
+[admin]
+port   = 8083
+assets = "/opt/influxdb/current/admin"
+
+[api]
+port         = 8086
+read-timeout = "5s"
+
+[raft]
+port = 8090
+dir  = "/var/log/influxdb/raft"
+
+[storage]
+dir = "/var/lib/influxdb/db"
+write-buffer-size = 10000
+
+[cluster]
+protobuf_port = 8099
+protobuf_timeout = "2s"
+protobuf_heartbeat = "200ms"
+protobuf_min_backoff = "1s"
+protobuf_max_backoff = "10s"
+
+write-buffer-size = 10000
+max-response-buffer-size = 100
+concurrent-shard-query-limit = 10
+
+[leveldb]
+max-open-files = 40
+lru-cache-size = "200m"
+max-open-shards = 0
+point-batch-size = 100
+write-batch-size = 5000000
+
+[sharding]
+  replication-factor = 1
+
+  [sharding.short-term]
+  duration = "7d"
+  split    = 1
+
+  [sharding.long-term]
+  duration = "30d"
+  split    = 1
+
+[wal]
+dir   = "/var/lib/influxdb/wal"
+flush-after          = 1000
+bookmark-after       = 1000
+index-after          = 1000
+requests-per-logfile = 10000
