@@ -1,9 +1,14 @@
 FROM hirokazumiyaji/ubuntu
 
-RUN apt-get update && \
-    apt-get install -y mysql-server-5.6 && \
-    sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
+RUN apt-get -y install cmake libncurses5-dev && \
+    git clone git://github.com/kamipo/mysql-build.git /usr/local/mysql-build
+WORKDIR /opt/mysql
+RUN /usr/local/mysql-build/bin/mysql-build 5.6.23 /opt/mysql/5.6.23 && \
+    cd /opt/mysql/5.6.23 && \
+    ./scripts/mysql_install_db
+
+ADD my.cnf /etc/my.cnf
 
 EXPOSE 3306
 
-CMD ["/etc/init.d/mysql", "start"]
+CMD ["/opt/mysql/5.6.23/bin/mysqld_safe", "--user=root"]
