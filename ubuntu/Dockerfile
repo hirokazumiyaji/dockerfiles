@@ -17,9 +17,9 @@ RUN apt-get -y update && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     apt-get -y update && \
     apt-get -y install gcc-4.9 g++-4.9 cpp-4.9 && \
+    apt-get clean && \
     ln -snf /usr/bin/gcc-4.9 /usr/bin/gcc && \
-    ln -snf /usr/bin/g++-4.9 /usr/bin/g++
-
-RUN cd /tmp && wget http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2
-RUN cd /tmp && tar xvf jemalloc-3.6.0.tar.bz2
-RUN cd /tmp/jemalloc-3.6.0 && ./configure && make && make install
+    ln -snf /usr/bin/g++-4.9 /usr/bin/g++ && \
+    cd /tmp && wget http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2 && \
+    cd /tmp && tar xvf jemalloc-3.6.0.tar.bz2 && \
+    cd /tmp/jemalloc-3.6.0 && ./configure && make && make install
