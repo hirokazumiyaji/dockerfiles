@@ -15,7 +15,6 @@ WORKDIR /etc/redis
 WORKDIR /var/log/redis
 ADD redis.conf /etc/redis.conf
 
-
 EXPOSE 6379
 
 CMD ["/usr/local/bin/redis-server"]
