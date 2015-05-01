@@ -12,14 +12,15 @@ RUN locale-gen ja_JP.UTF-8
 
 RUN apt-get -y update && \
     apt-get -y upgrade && \
-    apt-get -y install git build-essential zlib1g-dev libssl-dev libpcre3-dev wget autoconf software-properties-common && \
-    apt-get -y update && \
+    apt-get -y install git build-essential zlib1g-dev libssl-dev libpcre3-dev wget autoconf software-properties-common curl && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test && \
     apt-get -y update && \
     apt-get -y install gcc-4.9 g++-4.9 cpp-4.9 && \
-    apt-get clean && \
+    apt-get -y clean && \
+    rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* && \
     ln -snf /usr/bin/gcc-4.9 /usr/bin/gcc && \
     ln -snf /usr/bin/g++-4.9 /usr/bin/g++ && \
     cd /tmp && wget http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2 && \
     cd /tmp && tar xvf jemalloc-3.6.0.tar.bz2 && \
-    cd /tmp/jemalloc-3.6.0 && ./configure && make && make install
+    cd /tmp/jemalloc-3.6.0 && ./configure && make && make install && \
+    rm -rf /tmp/*
