@@ -1,5 +1,7 @@
 FROM google/debian:wheezy
 
+MAINTAINER Hirokazu Miyaji <hirokazu.miyaji@gmail.com>
+
 RUN echo 'deb http://security.debian.org/ jessie/updates main' >> /etc/apt/sources.list && \
     echo 'deb-src http://security.debian.org/ jessie/updates main' >> /etc/apt/sources.list && \
     echo 'deb http://ftp.us.debian.org/debian jessie main non-free' >> /etc/apt/sources.list && \
