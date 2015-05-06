@@ -6,4 +6,4 @@ RUN pip install supervisor && \
 
 ADD supervisord.conf /etc/supervisord.conf
 
-ENTRYPOINT ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
+CMD ["supervisord", "-n", "-c", "/etc/supervisord.conf"]
