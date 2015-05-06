@@ -12,4 +12,4 @@ RUN echo 'deb http://security.debian.org/ jessie/updates main' >> /etc/apt/sourc
     tar -xvf Python-2.7.9.tgz && cd Python-2.7.9 && ./configure --with-ensurepip=install && make -s -j2 && make install && pip install --upgrade pip && \
     apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/*
 
-ENTRYPOINT ["python"]
+CMD ["python"]
