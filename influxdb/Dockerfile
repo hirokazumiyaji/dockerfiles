@@ -1,17 +1,17 @@
-FROM hirokazumiyaji/ubuntu
+FROM quay.io/hirokazumiyaji/debian
 
-RUN cd /tmp && \
-    wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb && \
+MAINTAINER Hirokazu Miyaji <hirokazu.miyaji@gmail.com>
+
+RUN apt-get update -y && \
+    apt-get install -y --no-install-recommends curl && \
+    cd /tmp && \
+    curl -L -O http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb && \
     dpkg -i influxdb_latest_amd64.deb && \
-    rm influxdb_latest_amd64.deb
+    mkdir -p /etc/influxdb /var/log/influxdb /var/log/influxdb/raft /var/lib/influxdb/db /var/lib/influxdb/wal && \
+    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/*
 
-WORKDIR /etc/influxdb
-WORKDIR /var/log/influxdb
-WORKDIR /var/log/influxdb/raft
-WORKDIR /var/lib/influxdb/db
-WORKDIR /var/lib/influxdb/wal
-ADD config.toml /etc/influxdb/config.toml
+ONBUILD ADD config.toml /etc/influxdb/config.toml
 
 EXPOSE 8083 8086 8090 8099
 
-CMD /usr/bin/influxdb -config=/etc/influxdb/config.toml
+CMD ["/usr/bin/influxdb", "-config=/etc/influxdb/config.toml"]
