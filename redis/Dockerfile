@@ -10,9 +10,10 @@ RUN apt-get update -y && \
     cd redis-${REDIS_VERSION} && \
     make -j2 && make install && \
     mkdir -p /etc/redis /var/log/redis /var/run/redis && \
-    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/*
+    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ADD redis.conf /etc/redis.conf
+COPY redis.conf /etc/redis.conf
+ONBUILD COPY redis.conf /etc/redis.conf
 
 EXPOSE 6379
 
