@@ -2,13 +2,16 @@ FROM quay.io/hirokazumiyaji/debian
 
 MAINTAINER Hirokazu Miyaji <hirokazu.miyaji@gmail.com>
 
+ENV NGINX_VERSION 1.9.0
+ENV ZLIB_VERSION 1.2.8
+
 RUN apt-get update -y && apt-get install -y --no-install-recommends -q curl ca-certificates openssl libssl-dev libgeoip1 libgeoip-dev make zlib1g-dev libpcre3 libpcre3-dev && \
     cd /tmp && \
-    curl -L -O http://zlib.net/zlib-1.2.8.tar.gz && \
-    curl -L -O http://nginx.org/download/nginx-1.7.9.tar.gz && \
+    curl -L -O http://zlib.net/zlib-${ZLIB_VERSION}.tar.gz && \
+    curl -L -O http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar -xvf zlib-1.2.8.tar.gz && \
-    tar -xvf nginx-1.7.9.tar.gz && \
-    cd nginx-1.7.9 && \
+    tar -xvf nginx-${NGINX_VERSION}.tar.gz && \
+    cd nginx-${NGINX_VERSION} && \
     ./configure --conf-path=/etc/nginx/nginx.conf \
                 --sbin-path=/usr/sbin/nginx \
                 --http-client-body-temp-path=/var/lib/nginx/body \
@@ -22,7 +25,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends -q curl ca-c
                 --with-http_ssl_module \
                 --with-http_realip_module \
                 --with-http_gzip_static_module \
-                --with-zlib=/tmp/zlib-1.2.8 \
+                --with-zlib=/tmp/zlib-${ZLIB_VERSION} \
                 --with-http_geoip_module \
                 --with-pcre-jit && \
     make && make install && \
