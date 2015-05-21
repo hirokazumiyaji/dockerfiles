@@ -9,7 +9,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends -q curl ca-c
     cd /tmp && \
     curl -L -O http://zlib.net/zlib-${ZLIB_VERSION}.tar.gz && \
     curl -L -O http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
-    tar -xvf zlib-1.2.8.tar.gz && \
+    tar -xvf zlib-${ZLIB_VERSION}.tar.gz && \
     tar -xvf nginx-${NGINX_VERSION}.tar.gz && \
     cd nginx-${NGINX_VERSION} && \
     ./configure --conf-path=/etc/nginx/nginx.conf \
@@ -30,7 +30,10 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends -q curl ca-c
                 --with-pcre-jit && \
     make && make install && \
     mkdir -p /var/lib/nginx && \
-    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/*
+    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ONBUILD COPY nginx.conf /etc/nginx/nginx.conf
+ONBUILD COPY conf.d/* /etc/nginx/conf.d
 
 EXPOSE 80 443
 
