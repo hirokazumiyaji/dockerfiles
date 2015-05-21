@@ -8,9 +8,10 @@ RUN apt-get update -y && \
     curl -L -O http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb && \
     dpkg -i influxdb_latest_amd64.deb && \
     mkdir -p /etc/influxdb /var/log/influxdb /var/log/influxdb/raft /var/lib/influxdb/db /var/lib/influxdb/wal && \
-    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/*
+    apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-ONBUILD ADD config.toml /etc/influxdb/config.toml
+COPY config.toml /etc/influxdb/config.toml
+ONBUILD COPY config.toml /etc/influxdb/config.toml
 
 EXPOSE 8083 8086 8090 8099
 
