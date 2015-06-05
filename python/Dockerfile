@@ -2,7 +2,7 @@ FROM google/debian:wheezy
 
 MAINTAINER Hirokazu Miyaji <hirokazu.miyaji@gmail.com>
 
-ENV PYTHON_VERSION 2.7.9
+ENV PYTHON_VERSION 2.7.10
 
 RUN echo 'deb http://security.debian.org/ jessie/updates main' >> /etc/apt/sources.list && \
     echo 'deb-src http://security.debian.org/ jessie/updates main' >> /etc/apt/sources.list && \
