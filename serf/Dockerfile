@@ -15,3 +15,5 @@ RUN apt-get update -y && \
     apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ONBUILD ADD serf.conf /etc/supervisord.d
+
+EXPOSE 7946 7373
