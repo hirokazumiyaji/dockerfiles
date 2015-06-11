@@ -37,4 +37,4 @@ ONBUILD COPY conf.d/* /etc/nginx/conf.d
 
 EXPOSE 80 443
 
-ENTRYPOINT ["/usr/sbin/nginx"]
+CMD ["/usr/sbin/nginx"]
