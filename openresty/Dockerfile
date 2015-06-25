@@ -28,4 +28,6 @@ ONBUILD COPY conf.d/* /etc/nginx/conf.d/
 
 EXPOSE 80 443
 
+VOLUME ["/var/log/nginx"]
+
 CMD ["/usr/sbin/nginx"]
