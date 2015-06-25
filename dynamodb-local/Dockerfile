@@ -8,4 +8,6 @@ RUN apt-get -y install openjdk-7-jdk && \
 
 EXPOSE 9000
 
+VOLUME ["/usr/local/src/dynamodb"]
+
 CMD java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -port 9000 -dbPath /usr/local/src/dynamodb/db
