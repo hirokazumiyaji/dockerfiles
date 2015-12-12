@@ -4,9 +4,8 @@ RUN mkdir -p /usr/local/bin/dynamodb /var/lib/dynamodb && \
     cd /tmp && \
     curl -L -O http://dynamodb-local.s3-website-us-west-2.amazonaws.com/dynamodb_local_latest.tar.gz && \
     gunzip dynamodb_local_latest.tar.gz && \
-    tar xvf dynamodb_local_latest.tar -C /usr/local/bin/dynamodb
-
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    tar xvf dynamodb_local_latest.tar -C /usr/local/bin/dynamodb && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 VOLUME /var/lib/dynamodb
 
