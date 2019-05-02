@@ -17,8 +17,7 @@ COPY --from=golang /usr/local/go /usr/local/go
 ENV GOPATH $HOME
 ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
 
-RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && \
-    chmod -R 777 "$GOPATH"
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin"
 
 RUN go version
 
