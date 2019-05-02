@@ -1,4 +1,26 @@
+FROM adoptopenjdk/openjdk11 as java
+
+FROM golang:1.11-stretch as golang
+
 FROM ubuntu:18.04
+
+RUN mkdir -p /opt/java
+COPY --from=java /opt/java/openjdk /opt/java/openjdk
+
+ENV JAVA_HOME /opt/java/openjdk
+ENV PATH /opt/java/openjdk/bin:$PATH
+
+RUN java -version
+
+COPY --from=golang /usr/local/go /usr/local/go
+
+ENV GOPATH $HOME
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && \
+    chmod -R 777 "$GOPATH"
+
+RUN go version
 
 ENV PROTOC_VERSION 3.7.1
 
@@ -11,6 +33,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
       clang \
       curl \
       git \
+      gnupg \
       libatomic1 \
       libbsd0 \
       libc6-dev \
@@ -44,15 +67,6 @@ RUN cd protobuf-${PROTOC_VERSION} && \
     cd .. && \
     rm -rf v${PROTOC_VERSION}.zip protobuf-${PROTOC_VERSION}
 
-RUN curl -L -O https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.3%2B7/OpenJDK11U-jdk_x64_linux_hotspot_11.0.3_7.tar.gz && \
-    tar -xf OpenJDK11U-jdk_x64_linux_hotspot_11.0.3_7.tar.gz && \
-    mv jdk-11.0.3+7 /usr/local/lib/ && \
-    rm OpenJDK11U-jdk_x64_linux_hotspot_11.0.3_7.tar.gz
-
-ENV PATH /usr/local/lib/jdk-11.0.3+7/bin:$PATH
-
-RUN java -version
-
 ARG SWIFT_PLATFORM=ubuntu18.04
 ARG SWIFT_BRANCH=swift-5.0.1-release
 ARG SWIFT_VERSION=swift-5.0.1-RELEASE
@@ -80,18 +94,3 @@ RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | 
     chmod -R o+r /usr/lib/swift
 
 RUN swift --version
-
-ENV GOLANG_VERSION 1.11.9
-
-RUN curl -O -L https://golang.org/dl/go${GOLANG_VERSION}.linux-amd64.tar.gz && \
-    echo "e88aa3e39104e3ba6a95a4e05629348b4a1ec82791fb3c941a493ca349730608 *go${GOLANG_VERSION}.linux-amd64.tar.gz" | sha256sum -c - && \
-    tar -C /usr/local -xzf go${GOLANG_VERSION}.linux-amd64.tar.gz && \
-    rm go${GOLANG_VERSION}.linux-amd64.tar.gz
-
-ENV GOPATH $HOME
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
-
-RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && \
-    chmod -R 777 "$GOPATH"
-
-RUN go version
