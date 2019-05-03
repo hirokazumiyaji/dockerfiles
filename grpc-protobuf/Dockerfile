@@ -51,6 +51,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
       python3 \
       tzdata \
       unzip \
+      wget \
       zlib1g-dev && \
     rm -r /var/lib/apt/lists/*
 
@@ -66,7 +67,6 @@ RUN cd protobuf-${PROTOC_VERSION} && \
     cd .. && \
     rm -rf v${PROTOC_VERSION}.zip protobuf-${PROTOC_VERSION}
 
-ARG SWIFT_PLATFORM=ubuntu18.04
 ARG SWIFT_BRANCH=swift-5.0.1-release
 ARG SWIFT_VERSION=swift-5.0.1-RELEASE
 
@@ -74,22 +74,13 @@ ENV SWIFT_PLATFORM=$SWIFT_PLATFORM \
     SWIFT_BRANCH=$SWIFT_BRANCH \
     SWIFT_VERSION=$SWIFT_VERSION
 
-RUN SWIFT_URL=https://swift.org/builds/$SWIFT_BRANCH/$(echo "$SWIFT_PLATFORM" | tr -d .)/$SWIFT_VERSION/$SWIFT_VERSION-$SWIFT_PLATFORM.tar.gz && \
-    curl -fSsL $SWIFT_URL -o swift.tar.gz && \
-    curl -fSsL $SWIFT_URL.sig -o swift.tar.gz.sig && \
-    export GNUPGHOME="$(mktemp -d)" && \
-    set -e; \
-        for key in \
-      # pub   4096R/ED3D1561 2019-03-22 [expires: 2021-03-21]
-      #       Key fingerprint = A62A E125 BBBF BB96 A6E0  42EC 925C C1CC ED3D 1561
-      # uid                  Swift 5.x Release Signing Key <swift-infrastructure@swift.org
-          A62AE125BBBFBB96A6E042EC925CC1CCED3D1561 \
-        ; do \
-          gpg --quiet --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-        done && \
-    gpg --batch --verify --quiet swift.tar.gz.sig swift.tar.gz && \
-    tar -xzf swift.tar.gz --directory / --strip-components=1 && \
-    rm -r "$GNUPGHOME" swift.tar.gz.sig swift.tar.gz && \
+RUN curl -O -L https://swift.org/builds/${SWIFT_BRANCH}/ubuntu1804/${SWIFT_VERSION}/${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
+    curl -O -L https://swift.org/builds/${SWIFT_BRANCH}/ubuntu1804/${SWIFT_VERSION}/${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig && \
+    wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import - && \
+    gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift && \
+    gpg --batch --verify --quiet ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
+    tar -xzf ${SWIFT_VERSION}-ubuntu18.04.tar.gz --directory / --strip-components=1 && \
+    rm -r ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
     chmod -R o+r /usr/lib/swift
 
 RUN swift --version
