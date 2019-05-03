@@ -76,10 +76,10 @@ ENV SWIFT_PLATFORM=$SWIFT_PLATFORM \
 
 RUN curl -O -L https://swift.org/builds/${SWIFT_BRANCH}/ubuntu1804/${SWIFT_VERSION}/${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
     curl -O -L https://swift.org/builds/${SWIFT_BRANCH}/ubuntu1804/${SWIFT_VERSION}/${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig && \
-    wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import - && \
-    gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift && \
-    gpg --batch --verify --quiet ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
-    tar -xzf ${SWIFT_VERSION}-ubuntu18.04.tar.gz --directory / --strip-components=1 && \
+    wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
+RUN gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift
+RUN gpg --batch --verify --quiet ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz
+RUN tar -xzf ${SWIFT_VERSION}-ubuntu18.04.tar.gz --directory / --strip-components=1 && \
     rm -r ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
     chmod -R o+r /usr/lib/swift
 
