@@ -29,6 +29,8 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
       automake \
       binutils \
       ca-certificates \
+      gcc \
+      g++ \
       clang \
       curl \
       git \
