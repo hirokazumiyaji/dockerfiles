@@ -40,6 +40,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
       libcurl4 \
       libedit2 \
       libgcc-5-dev \
+      libnghttp2-dev \
       libpython2.7 \
       libsqlite3-0 \
       libstdc++-5-dev \
@@ -67,20 +68,40 @@ RUN cd protobuf-${PROTOC_VERSION} && \
     cd .. && \
     rm -rf v${PROTOC_VERSION}.zip protobuf-${PROTOC_VERSION}
 
-ARG SWIFT_BRANCH=swift-5.0.1-release
-ARG SWIFT_VERSION=swift-5.0.1-RELEASE
-
-ENV SWIFT_PLATFORM=$SWIFT_PLATFORM \
-    SWIFT_BRANCH=$SWIFT_BRANCH \
-    SWIFT_VERSION=$SWIFT_VERSION
+ENV SWIFT_BRANCH swift-5.0.1-release
+ENV SWIFT_VERSION swift-5.0.1-RELEASE
 
 RUN curl -O -L https://swift.org/builds/${SWIFT_BRANCH}/ubuntu1804/${SWIFT_VERSION}/${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
     curl -O -L https://swift.org/builds/${SWIFT_BRANCH}/ubuntu1804/${SWIFT_VERSION}/${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig && \
     wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
-RUN gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift
-RUN gpg --batch --verify --quiet ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz
-RUN tar -xzf ${SWIFT_VERSION}-ubuntu18.04.tar.gz --directory / --strip-components=1 && \
+RUN gpg --keyserver hkp://pool.sks-keyservers.net --refresh-keys Swift && \
+    gpg --batch --verify --quiet ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
+    tar -xzf ${SWIFT_VERSION}-ubuntu18.04.tar.gz --directory / --strip-components=1 && \
     rm -r ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
     chmod -R o+r /usr/lib/swift
 
 RUN swift --version
+
+ENV GRPC_JAVA_VERSION 1.20.0
+RUN curl -LO https://github.com/grpc/grpc-java/archive/v${GRPC_JAVA_VERSION}.tar.gz && \
+    tar xf v${GRPC_JAVA_VERSION}.tar.gz && \
+    cd grpc-java-${GRPC_JAVA_VERSION}/compiler && \
+    ../gradlew java_pluginExecutable && \
+    mv build/exe/java_plugin/protoc-gen-grpc-java /usr/local/bin/ && \
+    cd ../.. && \
+    rm -rf grpc-java-${GRPC_JAVA_VERSION} v${GRPC_JAVA_VERSION}.tar.gz
+
+RUN go get -d -u github.com/golang/protobuf/protoc-gen-go && \
+    go install github.com/golang/protobuf/protoc-gen-go
+
+ENV GRPC_WEB_VERSION 1.0.4
+RUN curl -O -L https://github.com/grpc/grpc-web/releases/download/${GRPC_WEB_VERSION}/protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 && \
+    mv protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 /usr/local/bin/protoc-gen-grpc-web && \
+    chmod +x /usr/local/bin/protoc-gen-grpc-web
+
+RUN git clone https://github.com/grpc/grpc-swift && \
+    cd grpc-swift && \
+    make && \
+    cp protoc-gen-swift protoc-gen-swiftgrpc /usr/local/bin/ && \
+    cd .. && \
+    rm -rf grpc-swift
