@@ -75,7 +75,7 @@ ENV SWIFT_VERSION swift-5.0.1-RELEASE
 
 RUN curl -O -L https://swift.org/builds/${SWIFT_BRANCH}/ubuntu1804/${SWIFT_VERSION}/${SWIFT_VERSION}-ubuntu18.04.tar.gz
 RUN tar -xzf ${SWIFT_VERSION}-ubuntu18.04.tar.gz --directory / --strip-components=1 && \
-    rm -r ${SWIFT_VERSION}-ubuntu18.04.tar.gz.sig ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
+    rm -rf ${SWIFT_VERSION}-ubuntu18.04.tar.gz && \
     chmod -R o+r /usr/lib/swift
 
 RUN swift --version
