@@ -1,13 +1,13 @@
 FROM redis:4.0.10-alpine
 
-ADD 7000 /data/7000
-ADD 7001 /data/7001
-ADD 7002 /data/7002
-ADD 7003 /data/7003
-ADD 7004 /data/7004
-ADD 7005 /data/7005
-ADD cluster /data/cluster
+RUN apk add ruby && \
+    gem install -N redis
 
-EXPOSE 7000 7001 7002 7003 7004 7005
+RUN mkdir -p /config
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+COPY redis-trib.rb /redis-trib.rb
 
-CMD ["/data/cluster"]
+EXPOSE 6379 6380 6381 6382 6383 6384
+
+CMD "/start.sh"
