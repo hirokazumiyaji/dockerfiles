@@ -7,34 +7,12 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
     apt-get install -qy --no-install-recommends \
       autoconf \
       automake \
-      binutils \
       ca-certificates \
-      gcc \
-      g++ \
-      clang \
-      curl \
-      git \
-      gnupg \
-      libatomic1 \
-      libbsd0 \
-      libc6-dev \
-      libc6-dev \
-      libcurl4 \
-      libedit2 \
-      libgcc-5-dev \
-      libnghttp2-dev \
-      libpython2.7 \
-      libsqlite3-0 \
-      libstdc++-5-dev \
       libtool \
-      libxml2 \
+      curl \
       make \
-      pkg-config \
-      python \
-      python3 \
-      tzdata \
+      g++ \
       unzip \
-      wget \
       zlib1g-dev && \
     rm -r /var/lib/apt/lists/*
 
