@@ -25,5 +25,6 @@ RUN cd protobuf-${PROTOC_VERSION} && \
     ./configure --disable-debug --disable-dependency-tracking --prefix=/usr/local --with-zlib && \
     make && \
     make install && \
+    ldconfig && \
     cd .. && \
     rm -rf v${PROTOC_VERSION}.zip protobuf-${PROTOC_VERSION}
