@@ -23,8 +23,22 @@ RUN go version
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && apt-get -q update && \
     apt-get install -qy --no-install-recommends \
-      libssl-dev \
-      openssl && \
+    binutils \
+    git \
+    libatomic1 \
+    libbsd0 \
+    libc6-dev \
+    libcurl4 \
+    libedit2 \
+    libgcc-5-dev \
+    libpython2.7 \
+    libsqlite3-0 \
+    libssl-dev \
+    libstdc++-5-dev \
+    libxml2 \
+    openssl \
+    pkg-config \
+    tzdata && \
     rm -r /var/lib/apt/lists/*
 
 WORKDIR /tmp
@@ -62,3 +76,5 @@ RUN git clone https://github.com/grpc/grpc-swift && \
     cp protoc-gen-swift protoc-gen-swiftgrpc /usr/local/bin/ && \
     cd .. && \
     rm -rf grpc-swift
+
+WORKDIR /home
