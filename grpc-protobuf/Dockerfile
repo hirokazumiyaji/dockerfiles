@@ -31,6 +31,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
     libcurl4 \
     libedit2 \
     libgcc-5-dev \
+    libnghttp2-dev \
     libpython2.7 \
     libsqlite3-0 \
     libssl-dev \
