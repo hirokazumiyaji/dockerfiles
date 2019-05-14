@@ -64,7 +64,8 @@ RUN curl -LO https://github.com/grpc/grpc-java/archive/v${GRPC_JAVA_VERSION}.tar
     rm -rf grpc-java-${GRPC_JAVA_VERSION} v${GRPC_JAVA_VERSION}.tar.gz
 
 RUN go get -d -u github.com/golang/protobuf/protoc-gen-go && \
-    go install github.com/golang/protobuf/protoc-gen-go
+    go install github.com/golang/protobuf/protoc-gen-go && \
+    ln -s $GOPATH/bin/protoc-gen-go /usr/local/bin/protoc-gen-go
 
 ENV GRPC_WEB_VERSION 1.0.4
 RUN curl -O -L https://github.com/grpc/grpc-web/releases/download/${GRPC_WEB_VERSION}/protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 && \
