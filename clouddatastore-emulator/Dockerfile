@@ -10,7 +10,7 @@ ENV PATH /opt/google-cloud-sdk/bin:/opt/java/openjdk/bin:$PATH
 
 COPY --from=static-docker-source /usr/local/bin/docker /usr/local/bin/docker
 
-RUN mkdir -p /opt/java
+RUN mkdir -p /opt/java /home/data
 COPY --from=java /opt/java/openjdk /opt/java/openjdk
 
 RUN apt-get -qqy update && \
@@ -41,7 +41,7 @@ COPY start.sh /usr/local/bin/start.sh
 
 RUN chmod +x /usr/local/bin/start.sh
 
-VOLUME ["/root/.config"]
+VOLUME ["/root/.config", "/home/data"]
 
 EXPOSE 8080
 
