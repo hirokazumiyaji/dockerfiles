@@ -2,7 +2,7 @@ FROM adoptopenjdk/openjdk11 as java
 
 FROM golang:1.11-stretch as golang
 
-FROM quay.io/hirokazumiyaji/protobuf:3.7.1
+FROM quay.io/hirokazumiyaji/protobuf:3.8.0
 
 RUN mkdir -p /opt/java
 COPY --from=java /opt/java/openjdk /opt/java/openjdk
@@ -54,7 +54,7 @@ RUN tar -xzf ${SWIFT_VERSION}-ubuntu18.04.tar.gz --directory / --strip-component
 
 RUN swift --version
 
-ENV GRPC_JAVA_VERSION 1.20.0
+ENV GRPC_JAVA_VERSION 1.21.0
 RUN curl -LO https://github.com/grpc/grpc-java/archive/v${GRPC_JAVA_VERSION}.tar.gz && \
     tar xf v${GRPC_JAVA_VERSION}.tar.gz && \
     cd grpc-java-${GRPC_JAVA_VERSION}/compiler && \
@@ -65,7 +65,9 @@ RUN curl -LO https://github.com/grpc/grpc-java/archive/v${GRPC_JAVA_VERSION}.tar
 
 RUN go get -d -u github.com/golang/protobuf/protoc-gen-go && \
     go install github.com/golang/protobuf/protoc-gen-go && \
-    ln -s /root/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go
+    ln -s /root/go/bin/protoc-gen-go /usr/local/bin/protoc-gen-go && \
+    go get -d -u github.com/pseudomuto/protoc-gen-doc/cmd/protoc-gen-doc && \
+    ln -s /root/go/bin/protoc-gen-doc /usr/local/bin/protoc-gen-doc
 
 ENV GRPC_WEB_VERSION 1.0.4
 RUN curl -O -L https://github.com/grpc/grpc-web/releases/download/${GRPC_WEB_VERSION}/protoc-gen-grpc-web-${GRPC_WEB_VERSION}-linux-x86_64 && \
