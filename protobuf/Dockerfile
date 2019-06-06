@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-ENV PROTOC_VERSION 3.7.1
+ENV PROTOC_VERSION 3.8.0
 
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
     apt-get -q update && \
