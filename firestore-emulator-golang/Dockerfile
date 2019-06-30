@@ -7,23 +7,13 @@ COPY --from=golang /usr/local/go /usr/local/go
 RUN mkdir -p /go
 
 ENV GOPATH /go
-ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+ENV PATH $GOPATH/bin:/usr/local/go/bin:/usr/local/bin:$PATH
 ENV ENTRYKIT_VERSION 0.4.0
 
 RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 WORKDIR $GOPATH
 
-RUN apk --update add openssl && \
-    rm -rf /var/cache/apk/* && \
-    curl -LO https://github.com/progrium/entrykit/releases/download/v${ENTRYKIT_VERSION}/entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz && \
-    tar -xvzf entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz && \
-    rm entrykit_${ENTRYKIT_VERSION}_Linux_x86_64.tgz && \
-    mv entrykit /bin/entrykit && \
-    chmod +x /bin/entrykit && \
-    entrykit --symlink
+COPY docker-entrypoint.ash /usr/local/bin/docker-entrypoint.ash
+RUN chmod +x /usr/local/bin/docker-entrypoint.ash
 
-ENTRYPOINT [ \
-  "codep", \
-  "/usr/local/bin/start.sh", \
-  "echo" \
-]
+ENTRYPOINT ["docker-entrypoint.ash"]
