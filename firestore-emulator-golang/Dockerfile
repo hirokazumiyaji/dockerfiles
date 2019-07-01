@@ -2,6 +2,8 @@ FROM golang:1.12-alpine as golang
 
 FROM quay.io/hirokazumiyaji/firestore-emulator:252.0.0
 
+RUN apk add clang
+
 COPY --from=golang /usr/local/go /usr/local/go
 
 RUN mkdir -p /go
