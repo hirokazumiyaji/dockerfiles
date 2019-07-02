@@ -3,8 +3,6 @@ FROM quay.io/hirokazumiyaji/firestore-emulator:252.0.0
 
 RUN apk add --no-cache ca-certificates
 
-RUN [ ! -e /etc/nsswitch.conf ] && echo 'hosts: files dns' > /etc/nsswitch.conf
-
 ENV GOLANG_VERSION 1.12.6
 
 COPY build-go.ash /tmp/build-go.ash
