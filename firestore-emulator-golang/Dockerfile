@@ -25,6 +25,8 @@ ENV GOPATH=
 
 RUN mkdir /builder
 
+COPY go_workspace.go prepare_workspace.inc /builder/
+
 COPY go.ash /builder/bin/
 ENV PATH=/builder/bin:$PATH
 
