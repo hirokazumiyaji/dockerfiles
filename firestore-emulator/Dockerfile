@@ -1,6 +1,6 @@
 FROM adoptopenjdk/openjdk11:alpine-jre
 
-ENV CLOUD_SDK_VERSION=252.0.0
+ENV CLOUD_SDK_VERSION=253.0.0
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
