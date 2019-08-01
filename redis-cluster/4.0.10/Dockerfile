@@ -10,5 +10,5 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-EXPOSE 6379 6380 6381 6382 6383 6384
+EXPOSE 6379 6380 6381 6382 6383 6384 16379 16380 16381 16382 16383 16384
 CMD ["sh"]
