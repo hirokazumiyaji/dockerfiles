@@ -1,6 +1,6 @@
 FROM redis:4.0.10-alpine
 
-RUN apk add ruby && \
+RUN apk add --no-cache curl jq ruby && \
     gem install -N redis
 
 COPY redis-trib.rb /usr/local/bin/
