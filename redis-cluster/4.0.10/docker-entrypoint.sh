@@ -1,7 +1,6 @@
 #!/bin/sh
 
 REDIS_CLUSTER_PORTS=${REDIS_CLUSTER_PORTS:-"6379 6380 6381 6382 6383 6384"}
-echo "cluster port = ${REDIS_CLUSTER_PORTS}"
 
 for PORT in ${REDIS_CLUSTER_PORTS}; do
     redis-server --bind 0.0.0.0 \
@@ -28,8 +27,6 @@ HOSTS=""
 for PORT in ${REDIS_CLUSTER_PORTS}; do
     HOSTS="${HOSTS} 127.0.0.1:${PORT}"
 done
-
-echo "hosts = ${HOSTS}"
 
 yes "yes" | ruby /usr/local/bin/redis-trib.rb create --replicas 1 ${HOSTS}
 
