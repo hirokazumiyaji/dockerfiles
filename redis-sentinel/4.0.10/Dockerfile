@@ -1,4 +1,4 @@
-FROM redis:4.0.10-alpine
+FROM quay.io/hirokazumiyaji/redis:4.0.10
 
 COPY redis-27000.conf /data/redis/redis-27000/redis.conf
 COPY redis-27001.conf /data/redis/redis-27001/redis.conf
