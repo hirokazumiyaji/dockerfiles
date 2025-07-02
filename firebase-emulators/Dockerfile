@@ -1,18 +1,21 @@
-FROM openjdk:17-slim
+FROM openjdk:21-slim
 
-RUN apt-get update \
-  && apt-get install -y curl \
-  && curl -sL https://deb.nodesource.com/setup_16.x | bash \
-  && apt-get install -y nodejs \
+RUN apt update -y \
+  && apt install -y curl \
+  && curl -sL https://deb.nodesource.com/setup_22.x | bash \
+  && apt install -y nodejs \
   && npm install -g firebase-tools
 
-WORKDIR /work
+WORKDIR /firebase
 
-COPY firebase.json /work/firebase.json
-COPY firestore.rules /work/firestore.rules
-COPY database.rules /work/database.rules
-COPY storage.rules /work/storage.rules
+COPY firebase.json /firebase/firebase.json
+COPY firestore.rules /firebase/firestore.rules
+COPY firestore.indexes.json /firebase/firestore.indexes.json
+COPY database.rules /firebase/database.rules
+COPY storage.rules /firebase/storage.rules
 
-ENTRYPOINT "firebase"
+RUN firebase emulators:exec --project test-project 'echo 1'
 
-CMD ["emulators:start"]
+ENTRYPOINT "/usr/bin/firebase"
+
+EXPOSE 9099 4000 8080 9199 8085
